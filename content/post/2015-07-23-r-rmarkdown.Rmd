@@ -1,5 +1,5 @@
 ---
-title: "cesR Data Analysis"
+title: "2019 CES Anaysis"
 author: "Shijia Yu"
 date: 2020-09-25T21:13:14-05:00
 bibliography: "references.bib"
@@ -18,6 +18,9 @@ library(cesR)
 library(skimr)
 ```
 
+# Abstract
+The paper is based on some findings of the 2019 Canadian Election Survey's data. Two variables 'income' and 'religion' are picked to do some detailed analysis and graphing. The result can be used to estimate some characteristics for the whole population. Some limitations and weaknesses are also existed and are listed in the end.
+
 # Introduction
 
 Three paragraph statement.
@@ -29,7 +32,9 @@ Second paragraph: More about what you did and found.
 Third paragraph: Outline of the paper. Future work. Weaknesses.
 Introduce the scenario and data objective.
 Type of data variable.
-
+  In this paper, we use 2019 Canadian Election Survey as our dataset. The dataset records 37882 observations with 22 variables which display various information of each tested person. Two variables 'income' and 'religion' are selected to do related analysis. I find out the distribution of the religion in the survey sample is definitely not homogeneous. The average income is higher than the median of the income which represents skewness of the income distribution. There are also many outliers in the 'income' variable that will have extreme effect on the population parameter's estimation.
+  In order to find out more, I plotted a bar chart for the sample's religion distribution and a histogram for income distribution. After observing the graphs, I generate some conclusions which can be used to estimate the population. The detailed discussions can be seen in the 'Discussion' section.
+    The outline of the paper is: First, I introduce the 2019 Canadian Election Survey dataset and select specific variables that I will discuss. Second, I generate some summary statistics and two graphs and have some interesting findings. Third, I discuss the graphs that I plotted and explain my observations. The last but not the least, I listed some limitations and weaknesses of the survey sample.
 
 ```{r download, warning=FALSE, message=FALSE}
 # install.packages("devtools")
@@ -37,14 +42,13 @@ Type of data variable.
 
 cesR::get_decon()
 ```
+
 # Data
 
-The CES dataset is....
-
+The CES dataset generates the result of the survey for 2019 Canadian Election. The online survey result contains 37822 observations with 22 variables including information of citizenship, year of birth, gender, province_territory, education, Ir, religion, sexuality, language, employment, income, marital status, economics effect on the people. The following table shows a format of the decon dataset and some possible response from the interviewees. 
 ```{r}
 head(decon)
 ```
-Some initial explorations that would be used to guide this section.
 
 ```{r}
 #visdat::vis_dat(decon)
@@ -64,23 +68,18 @@ decon %>% summarise(mean_income = mean(income), sd_income = sd(income), min_inco
                     max_income = max(income), median_income = median(income))
 
 ```
-The variables we focus on are....
+22 variables are too many and some of them will not be taken into consideration. Therefore, the variables we focus on for this paper are just 'religion' and 'income'. We hope to plot some graphs based on these two variables and analyze the corresponding findings.'Religion' is a categorical variable while 'income' is a numeric variable. Since there are some people who did not want to disclose their income or there are some error such as input mistakes, we need to filter all the observations and select the ones with an income less than 1000000.  Therefore, we form a subset with only two variables 'religion' and 'income' in the end and all the responses for the income are reasonable.
 
-Summary statistics for these variables...
+Here are some summary statistics for 'income': as we can see in the one-row table, the average income, standard deviation of the income, minimum and maximum income, and median number are clearly listed. We then can have a brief overview of some attributes and distribution of the income range of 2019 Canadian Election voting people. 
 
-You must include graphs.
+In the next steps, we will generate some graphs based on 'religion' and 'income' to see some characristics in details.
 
 ```{r}
 decon %>% 
   ggplot(aes(x = religion)) +
   geom_bar() + coord_flip()#categorical data
 ```
-
-```{r}
-decon %>% 
-  ggplot(aes(x = income)) +
-  geom_histogram()
-```
+ 
 
 ```{r}
 decon %>% 
@@ -94,21 +93,25 @@ decon %>%
 ```
 # Discussion of the graphs
 
-My discussion... main findings of your graph.
-
-
-Features of your survey.... Non-response... etc. And how these could affect the results....
-
-# Discussion of the Paper
+  The first graph generates all the religions in the survey sample with the respective number of the people who are in that religion. As we can see, Catholic/Roman Catholic/RC contains over 7000 people in this survey sample which is the largest religion among all the people tested.In addition, almost 7000 people don't have a religion. The finding is over 50% of the people in the survey sample are without religion or Catholic. We can also roughly calculate the proportion of Canadian people who have a religion in Catholic is 27.4%, Canadian people who don't have a religion take up approximately 28%. After having this observation, we may estimate population proportion of religion according to the sample proportion.  
+  The second graph shows distribution of income in 2019 Canadian Election Survey. As we can see in the histogram, the income range of the sample is mainly distributed in 0--250000. The median of the income is 72000 and the average sample income is 84317.88. My finding is that the average is greater than the median, therefore, the data is heavily skewed on the range of less than the mean which is left-skewed. We can also conclude that most people's incomes are approximately in the range of 70000 to 85000. 
+  Another finding of the second graph is that there are around 1800 people in the sample without income. This situation can indicate that there are around 7% of Canadian Citizen in the population not having income. In addition, there are also some outliers of income over 250000, and they will affect the average level of income in the sample and may result in bias when doing estimations for the population.  
+  The records with no-response or unreasonable response for the income will reduce the sample size because these observations are deleted. This will definitely affect the accuracy of the result and may affect the distribution of other variables such as 'religion'.
 
 ## Weaknesses and next steps
 
-My weaknesses...
+  My weaknesses are that the sample size is not big enough to correctly estimate the situation for the whole population. The population of Canada in 2019 is 37.59 million while the sample size after deleting no-response and unreasonable responses is 25505.It may be biased and cannot be considered as an sufficient and accurate evidence for population income and religion prediction. 
 
 # Reference
 -Hadley Wickham, Jim Hester and Winston Chang (2020). devtools: Tools to Make Developing R Packages Easier.
   https://devtools.r-lib.org/, https://github.com/r-lib/devtools.
-  
+
+-JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham
+  and Joe Cheng and Winston Chang and Richard Iannone (2020). rmarkdown: Dynamic Documents for R. R package version 2.3.
+  URL https://rmarkdown.rstudio.com.
+
+-Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown: The Definitive Guide. Chapman and Hall/CRC. ISBN
+  9781138359338. URL https://bookdown.org/yihui/rmarkdown.
 
 
 
