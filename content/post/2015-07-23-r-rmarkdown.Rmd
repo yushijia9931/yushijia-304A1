@@ -1,5 +1,5 @@
 ---
-title: "COVID-19 Data"
+title: "cesR Data Analysis"
 author: "Shijia Yu"
 date: 2020-09-25T21:13:14-05:00
 bibliography: "references.bib"
@@ -9,40 +9,106 @@ tags: ["R Markdown", "plot", "regression"]
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
+#install.packages("tidyverse")
+#install.packages("devtools")
+#devtools::install_github("hodgettsp/cesR")
+library(tidyverse)
+library(visdat)
+library(cesR)
+library(skimr)
 ```
-# Abstract
-
-My abstract. We use @citetidyverse
 
 # Introduction
 
-# Data Introduction
+Three paragraph statement.
 
+First paragraph: General. Motivational. Majors specific finding. 
 
+Second paragraph: More about what you did and found.
+
+Third paragraph: Outline of the paper. Future work. Weaknesses.
 Introduce the scenario and data objective.
 Type of data variable.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-You can embed an R code chunk like this:
+```{r download, warning=FALSE, message=FALSE}
+# install.packages("devtools")
+# devtools::install_github("hodgettsp/cesR")
 
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
+cesR::get_decon()
+```
+# Data
+
+The CES dataset is....
+
+```{r}
+head(decon)
+```
+Some initial explorations that would be used to guide this section.
+
+```{r}
+#visdat::vis_dat(decon)
+
+#skimr::skim(decon)
+
+#class(decon$ces_code)
+
+decon <- 
+  decon %>% 
+  filter(income < 1000000)#select observations
+
+decon <- 
+  decon %>% 
+  select(religion, income)#select variables
+decon %>% summarise(mean_income = mean(income), sd_income = sd(income), min_income = min(income),
+                    max_income = max(income), median_income = median(income))
+
+```
+The variables we focus on are....
+
+Summary statistics for these variables...
+
+You must include graphs.
+
+```{r}
+decon %>% 
+  ggplot(aes(x = religion)) +
+  geom_bar() + coord_flip()#categorical data
 ```
 
-# Including Plots
-
-You can also embed plots. See Figure \@ref(fig:pie) for example:
-
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
+```{r}
+decon %>% 
+  ggplot(aes(x = income)) +
+  geom_histogram()
 ```
+
+```{r}
+decon %>% 
+  ggplot(aes(x = income)) +
+  geom_histogram() +
+  labs(x = "Income",
+       y = "Number",
+       title = "Distribution of income in 2019 CES",
+       caption = "Source: Stephenson, Harell, Rubenson, Loewen, 2020.") +
+  theme_bw()
+```
+# Discussion of the graphs
+
+My discussion... main findings of your graph.
+
+
+Features of your survey.... Non-response... etc. And how these could affect the results....
+
+# Discussion of the Paper
+
+## Weaknesses and next steps
+
+My weaknesses...
+
 # Reference
+-Hadley Wickham, Jim Hester and Winston Chang (2020). devtools: Tools to Make Developing R Packages Easier.
+  https://devtools.r-lib.org/, https://github.com/r-lib/devtools.
+  
+
+
+
