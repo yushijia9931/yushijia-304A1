@@ -82,7 +82,8 @@ decon %>%
        caption = "Source: Stephenson, Harell, Rubenson, Loewen, 2020.") +
   theme_bw()
 ```
-# Discussion of the graphs
+
+# Discussion of the Graphs
 
   The first graph generates all the religions in the survey sample with the respective number of the people who are in that religion. As we can see, Catholic/Roman Catholic/RC contains over 7000 people in this survey sample which is the largest religion among all the people tested.In addition, almost 7000 people don't have a religion. The finding is over 50% of the people in the survey sample are without religion or Catholic. We can also roughly calculate the proportion of Canadian people who have a religion in Catholic is 27.4%, Canadian people who don't have a religion take up approximately 28%. After having this observation, we may estimate population proportion of religion according to the sample proportion.  
   The second graph shows distribution of income in 2019 Canadian Election Survey. As we can see in the histogram, the income range of the sample is mainly distributed in 0--250000. The median of the income is 72000 and the average sample income is 84317.88. My finding is that the average is greater than the median, therefore, the data is heavily skewed on the range of less than the mean which is left-skewed. We can also conclude that most people's incomes are approximately in the range of 70000 to 85000. 
