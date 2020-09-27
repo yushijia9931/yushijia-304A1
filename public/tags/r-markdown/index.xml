@@ -8,16 +8,13 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 25 Sep 2020 21:13:14 -0500</lastBuildDate><atom:link href="/tags/r-markdown/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>cesR Data Analysis</title>
-      <link>/2020/09/25/cesr-data-analysis/</link>
+      <title>2019 CES Anaysis</title>
+      <link>/2020/09/25/2019-ces-anaysis/</link>
       <pubDate>Fri, 25 Sep 2020 21:13:14 -0500</pubDate>
       
-      <guid>/2020/09/25/cesr-data-analysis/</guid>
-      <description>Introduction Three paragraph statement.
-First paragraph: General. Motivational. Majors specific finding.
-Second paragraph: More about what you did and found.
-Third paragraph: Outline of the paper. Future work. Weaknesses. Introduce the scenario and data objective. Type of data variable.
-# install.packages(&amp;quot;devtools&amp;quot;) # devtools::install_github(&amp;quot;hodgettsp/cesR&amp;quot;) cesR::get_decon() ## TO CITE THIS SURVEY FILE: Stephenson, Laura B; Harell, Allison; Rubenson, Daniel; Loewen, Peter John, 2020, &amp;#39;2019 Canadian Election Study - Online Survey&amp;#39;, ## https://doi.</description>
+      <guid>/2020/09/25/2019-ces-anaysis/</guid>
+      <description>Abstract My paper is based on some findings of the 2019 Canadian Election Survey’s data. Two variables ‘income’ and ‘religion’ are picked to do some detailed analysis and graphing. The result can be used to estimate some characteristics for the whole population. Some limitations and weaknesses are also existed and listed in the end.
+ Introduction In this paper, we use 2019 Canadian Election Survey as our dataset. The dataset records 37882 observations with 22 variables which display various information of each tested person.</description>
     </item>
     
   </channel>

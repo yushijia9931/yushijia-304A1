@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>2019 CES Anaysis - Shijia&#39;s 304 Website</title>
+<meta property="og:title" content="2019 CES Anaysis - Shijia&#39;s 304 Website">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">2019 CES Anaysis</h1>
+
+    
+    <span class="article-date">2020-09-25</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div id="abstract" class="section level1">
+<h1>Abstract</h1>
+<p>My paper is based on some findings of the 2019 Canadian Election Survey’s data. Two variables ‘income’ and ‘religion’ are picked to do some detailed analysis and graphing. The result can be used to estimate some characteristics for the whole population. Some limitations and weaknesses are also existed and listed in the end.</p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>In this paper, we use 2019 Canadian Election Survey as our dataset. The dataset records 37882 observations with 22 variables which display various information of each tested person. Two variables ‘income’ and ‘religion’ are selected to do related analysis. I find out the distribution of the religion in the survey sample is definitely not homogeneous. The average income is higher than the median of the income which represents skewness of the income distribution. There are also many outliers in the ‘income’ variable that will have extreme effect on the population parameter’s estimation.
+In order to find out more, I plotted a bar chart for the sample’s religion distribution and a histogram for income distribution. After observing the graphs, I generate some conclusions which can be used to estimate the population. The detailed discussions can be seen in the ‘Discussion’ section.
+The outline of the paper is: First, I introduce the 2019 Canadian Election Survey dataset and select specific variables that I will discuss. Second, I generate some summary statistics and two graphs and have some interesting findings. Third, I discuss the graphs that I plotted and explain my observations. The last but not the least, I listed some limitations and weaknesses of the survey sample.</p>
+<pre class="r"><code># install.packages(&quot;devtools&quot;)
+# devtools::install_github(&quot;hodgettsp/cesR&quot;)
+
+cesR::get_decon()
+## TO CITE THIS SURVEY FILE: Stephenson, Laura B; Harell, Allison; Rubenson, Daniel; Loewen, Peter John, 2020, &#39;2019 Canadian Election Study - Online Survey&#39;,
+##            https://doi.org/10.7910/DVN/DUS88V, Harvard Dataverse, V1
+## LINK: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DUS88V</code></pre>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>The CES dataset generates the result of the survey for 2019 Canadian Election. The online survey result contains 37822 observations with 22 variables including information of citizenship, year of birth, gender, province_territory, education, Ir, religion, sexuality, language, employment, income, marital status, economics effect on the people. The following table shows a format of the decon dataset and some possible response from the interviewees.</p>
+<pre class="r"><code>head(decon)
+## # A tibble: 6 x 22
+##   ces_code citizenship yob   gender province_territ… education lr    lr_bef
+##   &lt;chr&gt;    &lt;fct&gt;       &lt;fct&gt; &lt;fct&gt;  &lt;fct&gt;            &lt;fct&gt;     &lt;chr&gt; &lt;chr&gt; 
+## 1 ces2019… Canadian c… 1989  A wom… Quebec           Master&#39;s… 2     &lt;NA&gt;  
+## 2 ces2019… Canadian c… 1998  A wom… Quebec           Master&#39;s… 2     &lt;NA&gt;  
+## 3 ces2019… Canadian c… 2000  A wom… Ontario          Some uni… 4     4     
+## 4 ces2019… Canadian c… 1998  A man  Ontario          Some uni… 7     7     
+## 5 ces2019… Canadian c… 2000  A wom… Ontario          Complete… 4     4     
+## 6 ces2019… Canadian c… 1999  A wom… Ontario          Some uni… 4     4     
+## # … with 14 more variables: lr_aft &lt;chr&gt;, religion &lt;fct&gt;,
+## #   sexuality_selected &lt;fct&gt;, sexuality_text &lt;chr&gt;, language_eng &lt;fct&gt;,
+## #   language_fr &lt;fct&gt;, language_abgl &lt;fct&gt;, employment &lt;fct&gt;, income &lt;dbl&gt;,
+## #   income_cat &lt;fct&gt;, marital &lt;fct&gt;, econ_retro &lt;fct&gt;, econ_fed &lt;fct&gt;,
+## #   econ_self &lt;fct&gt;</code></pre>
+<pre class="r"><code>#visdat::vis_dat(decon)
+
+#skimr::skim(decon)
+
+#class(decon$ces_code)
+
+decon &lt;- 
+  decon %&gt;% 
+  filter(income &lt; 1000000)#select observations
+
+decon &lt;- 
+  decon %&gt;% 
+  select(religion, income)#select variables
+decon %&gt;% summarise(mean_income = mean(income), sd_income = sd(income), min_income = min(income),
+                    max_income = max(income), median_income = median(income))
+## # A tibble: 1 x 5
+##   mean_income sd_income min_income max_income median_income
+##         &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;
+## 1      84318.    68724.          0     999000         72000</code></pre>
+<p>22 variables are too many and some of them will not be taken into consideration. Therefore, the variables we focus on for this paper are just ‘religion’ and ‘income’. We hope to plot some graphs based on these two variables and analyze the corresponding findings.’Religion’ is a categorical variable while ‘income’ is a numeric variable. Since there are some people who did not want to disclose their income or there are some error such as input mistakes, we need to filter all the observations and select the ones with an income less than 1000000. Therefore, we form a subset with only two variables ‘religion’ and ‘income’ in the end and all the responses for the income are reasonable.</p>
+<p>Here are some summary statistics for ‘income’: as we can see in the one-row table, the average income, standard deviation of the income, minimum and maximum income, and median number are clearly listed. We then can have a brief overview of some attributes and distribution of the income range of 2019 Canadian Election voting people.</p>
+<p>In the next steps, we will generate some graphs based on ‘religion’ and ‘income’ to see some characristics in details.</p>
+<pre class="r"><code>decon %&gt;% 
+  ggplot(aes(x = religion)) +
+  geom_bar() + coord_flip()#categorical data</code></pre>
+<p><img src="/post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>decon %&gt;% 
+  ggplot(aes(x = income)) +
+  geom_histogram() +
+  labs(x = &quot;Income&quot;,
+       y = &quot;Number&quot;,
+       title = &quot;Distribution of income in 2019 CES&quot;,
+       caption = &quot;Source: Stephenson, Harell, Rubenson, Loewen, 2020.&quot;) +
+  theme_bw()
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="/post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+# Discussion of the graphs</p>
+<p>The first graph generates all the religions in the survey sample with the respective number of the people who are in that religion. As we can see, Catholic/Roman Catholic/RC contains over 7000 people in this survey sample which is the largest religion among all the people tested.In addition, almost 7000 people don’t have a religion. The finding is over 50% of the people in the survey sample are without religion or Catholic. We can also roughly calculate the proportion of Canadian people who have a religion in Catholic is 27.4%, Canadian people who don’t have a religion take up approximately 28%. After having this observation, we may estimate population proportion of religion according to the sample proportion.<br />
+The second graph shows distribution of income in 2019 Canadian Election Survey. As we can see in the histogram, the income range of the sample is mainly distributed in 0–250000. The median of the income is 72000 and the average sample income is 84317.88. My finding is that the average is greater than the median, therefore, the data is heavily skewed on the range of less than the mean which is left-skewed. We can also conclude that most people’s incomes are approximately in the range of 70000 to 85000.
+Another finding of the second graph is that there are around 1800 people in the sample without income. This situation can indicate that there are around 7% of Canadian Citizen in the population not having income. In addition, there are also some outliers of income over 250000, and they will affect the average level of income in the sample and may result in bias when doing estimations for the population.<br />
+The records with no-response or unreasonable response for the income will reduce the sample size because these observations are deleted. This will definitely affect the accuracy of the result and may affect the distribution of other variables such as ‘religion’.</p>
+<div id="weaknesses-and-next-steps" class="section level2">
+<h2>Weaknesses and next steps</h2>
+<p>My weaknesses are that the sample size is not big enough to correctly estimate the situation for the whole population. The population of Canada in 2019 is 37.59 million while the sample size after deleting no-response and unreasonable responses is 25505.It may be biased and cannot be considered as an sufficient and accurate evidence for population income and religion prediction.
+Therefore, a bigger sample is needed and it’s better to know in which method the sampling is conducted to see whether the sample can properly represent the population.</p>
+</div>
+</div>
+<div id="reference" class="section level1">
+<h1>Reference</h1>
+<p>-Hadley Wickham, Jim Hester and Winston Chang (2020). devtools: Tools to Make Developing R Packages Easier.
+<a href="https://devtools.r-lib.org/" class="uri">https://devtools.r-lib.org/</a>, <a href="https://github.com/r-lib/devtools" class="uri">https://github.com/r-lib/devtools</a>.</p>
+<p>-JJ Allaire and Yihui Xie and Jonathan McPherson and Javier Luraschi and Kevin Ushey and Aron Atkins and Hadley Wickham
+and Joe Cheng and Winston Chang and Richard Iannone (2020). rmarkdown: Dynamic Documents for R. R package version 2.3.
+URL <a href="https://rmarkdown.rstudio.com" class="uri">https://rmarkdown.rstudio.com</a>.</p>
+<p>-Yihui Xie and J.J. Allaire and Garrett Grolemund (2018). R Markdown: The Definitive Guide. Chapman and Hall/CRC. ISBN
+9781138359338. URL <a href="https://bookdown.org/yihui/rmarkdown" class="uri">https://bookdown.org/yihui/rmarkdown</a>.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
