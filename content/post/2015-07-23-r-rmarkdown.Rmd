@@ -19,7 +19,7 @@ library(skimr)
 ```
 
 # Abstract
-My paper is based on some findings of the 2019 Canadian Election Survey's data. Two variables 'income' and 'religion' are picked to do some detailed analysis and graphing. The result can be used to estimate some characteristics for the whole population. Some limitations and weaknesses are also existed and listed in the end.
+The paper is based on some findings of the 2019 Canadian Election Survey's data. Two variables 'income' and 'religion' are picked to do some detailed analysis and graphing. The result can be used to estimate some characteristics for the whole population. Some limitations and weaknesses are also existed and listed in the end.
 
 # Introduction
 
