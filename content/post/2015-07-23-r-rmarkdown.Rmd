@@ -93,7 +93,7 @@ decon %>%
 ## Weaknesses and next steps
 
   My weaknesses are that the sample size is not big enough to correctly estimate the situation for the whole population. The population of Canada in 2019 is 37.59 million while the sample size after deleting no-response and unreasonable responses is 25505.It may be biased and cannot be considered as an sufficient and accurate evidence for population income and religion prediction. 
-   Therefore, a bigger sample is needed and it's better to know in which method the sampling is conducted to see whether the sample can properly represent the population. 
+  Therefore, a bigger sample is needed and it's better to know in which method the sampling is conducted to see whether the sample can properly represent the population. 
 
 # Reference
 -Hadley Wickham, Jim Hester and Winston Chang (2020). devtools: Tools to Make Developing R Packages Easier.
